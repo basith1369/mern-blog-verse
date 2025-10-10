@@ -14,6 +14,7 @@ const SignUp = () => {
         password: "",
         confirmpassword: ""
     })
+    const [isLoading,setIsLoading]=useState(false)
     const [error, setError] = useState("")
     const [success, setSuccess] = useState("")
     const [ShowPassword, setShowPassword] = useState(false)
@@ -24,6 +25,9 @@ const SignUp = () => {
         password: "",
         confirmpassword: ""
     })
+
+    const[IsModalOpen,setIsOpenModal]=useState(false);
+
     const handlePassword = () => {
         setShowPassword((password) => !password)
     }
@@ -39,6 +43,8 @@ const SignUp = () => {
             setErrors((errors) => ({ ...errors, confirmpassword: "" }))
     }
     const handleSubmit = (event) => {
+        setIsLoading(true);
+ 
         event.preventDefault()
         let newErrors = {}
         if (!FormData.fullName) {
@@ -58,9 +64,11 @@ const SignUp = () => {
         }
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors)
+            setIsLoading(false);
         }
         else {
-            setSuccess("account created successfully")
+            setTimeout(()=>{
+            setSuccess("Account created successfully")
             setFormData({
                 fullName: "",
                 email: "",
@@ -68,13 +76,11 @@ const SignUp = () => {
                 confirmpassword: ""
 
             })
-            setErrors({
-                fullName: "",
-                email: "",
-                password: "",
-                confirmpassword: ""
+            setIsOpenModal(true);
+            setIsLoading(false);
+          
+            },3000);
 
-            })
         }
         // if(!FormData.fullName || !FormData.email || !FormData.password || !FormData.confirmpassword){
         //     setError("Please fill all the fields")
@@ -94,7 +100,7 @@ const SignUp = () => {
     return (
         <div className="flex flex-col items-center gap-5">
             <NavBar />
-            <h1 className="font-bold text-2xl text-blue-400">Join BlogVerse</h1>
+            <h1 className="font-bold text-4xl text-blue-400">Join BlogVerse</h1>
             <p className="text-gray-500 text-xl text-center font-semibold">Create your Account <br /> start your journey with BlogVerse</p>
             <form onSubmit={handleSubmit} className="flex flex-col lg:w-[50%] border-1 border-gray-400 rounded-2xl shadow-lg shadow-gray-500 hover:shadow-black w-[80%] py-7 items-center gap-5">
                 <div className="w-[90%] flex flex-col gap-2">
@@ -122,7 +128,7 @@ const SignUp = () => {
                 </div>
 
                 <div className="w-[90%] flex flex-col gap-2 ">
-                    <p className="text-md text-gray-700 font-semibold ">Pasword</p>
+                    <p className="text-md text-gray-700 font-semibold ">Password</p>
                     <div className="relative">
                         <input type={ShowPassword ? "text" : "password"} placeholder="Enter Password" name="password" onChange={handleChange} value={FormData.password}
                             className="border-1 border-black w-full py-2 px-10 rounded-2xl focus:outline-none
@@ -135,7 +141,7 @@ const SignUp = () => {
                 </div>
 
                 <div className="w-[90%] flex flex-col gap-2">
-                    <p className="text-md text-gray-700 font-semibold">Conform Password</p>
+                    <p className="text-md text-gray-700 font-semibold">Confirm Password</p>
                     <div className="relative">
                         <input type={ShowPassword1 ? "text" : "password"} placeholder="Re-enter Password" name="confirmpassword" onChange={handleChange} value={FormData.confirmpassword}
                             className="border-1 border-black w-full py-2 px-10 rounded-2xl focus:outline-none
@@ -153,14 +159,27 @@ const SignUp = () => {
                 </div>
                 {/* {error && <p className="text-red-400">{error}</p>} */}
                 {success && <p className="text-green-400">{success}</p>}
-                <button type="submit" className="text-white border-1 bg-purple-500 font-semibold p-3 rounded-2xl cursor-pointer flex gap-3"><CircleUser />Create Account</button>
+                <button type="submit" className="text-white border-1 bg-violet-600 font-semibold p-3 rounded-2xl cursor-pointer flex gap-3"><CircleUser />
+                <p>{isLoading?"Creating...":"Create Account"}</p></button>
 
                 <div className="border-[0.5px] border-gray-500 w-[90%] mt-4"></div>
 
                 <p className="text-gray-500 font-semibold">Already have an account?<Link to="/login" className="text-purple-700 cursor-pointer hover:underline">Sign In here</Link></p>
 
-                <Link to="/" className="hover:bg-gray-500 cursor-pointer py-4 px-3 text-center rounded-xl w-[90%]">Back to Home</Link>
+                <Link to="/" className="hover:bg-gray-300 cursor-pointer py-4 px-3 text-center rounded-xl w-[90%]">Back to Home</Link>
             </form>
+           { IsModalOpen && 
+           <div className='fixed h-dvh w-dvw flex border-2 border-red-500 justify-center items-center '>
+              <div className="absolute h-dvh w-dvw bg-black opacity-50"></div>
+                <div className="border-2 p-4 width-[50%] border-blue-500 bg-white z-10" >
+                    <p className="text-xl font-bold">Hello Abdul Basith,Welcome to Blog-verse</p>
+                    <p className=" pb-4">Your account has been created successfully.You can now sign in and start posting.</p>
+                    <div className="">
+                    <Link to="/SignIn" className=" px-3 py-2 rounded-xl  bg-blue-400 text-white ">LogIn</Link>
+                     <button onClick={()=>setIsOpenModal(false)}className="bg-gray-300 text-black ml-2 rounded-xl px-3 py-1">close</button>
+                    </div>               
+                </div>
+            </div>}
         </div>
     )
 

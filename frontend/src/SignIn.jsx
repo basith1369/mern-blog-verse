@@ -35,7 +35,7 @@ const SignIn = () => {
         </div>
         <button className="font-semibold text-white rounded-xl cursor-pointer bg-blue-800 p-1 md:py-3 w-[90%]">Forgot Password?</button>
         </div>
-        <button className="text-white py-3 w-[90%] font-semibold cursor:pointer border-2 rounded-xl hover:bg-blue-600">Sign In</button>
+        <button className="text-black py-3 w-[90%] font-semibold cursor:pointer border-1 rounded-xl hover:bg-blue-600">Sign In</button>
         <div className="border-[0.5px] border-gray-400 w-[90%] mt-1"></div>
         <p className="text-gray-700 font-semibold mb-8">Don't have an Account?<Link to="/signup" className="text-blue-500">create one here</Link></p>
 
